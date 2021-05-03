@@ -9,12 +9,12 @@ from live_plot import plot_durations
 from Players.Player import BotPlayer
 class Game:
 
-    def __init__(self, players, use_gui=False):
+    def __init__(self, players, use_gui=False, depth=2):
         if use_gui:
             self.window = GUI()
         
         self.use_gui   = use_gui
-        self.players   = [BotPlayer(), players]
+        self.players   = [BotPlayer(depth=depth), players]
         self.penlty    = ((st.MAP_SIZE-2)**2) //len(self.players)
         self.actions   = {0: np.array([-1,  0]),   ## UP
                           1: np.array([ 1,  0]),   ## DOWN

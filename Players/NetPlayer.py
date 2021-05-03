@@ -117,11 +117,9 @@ class NetPlayer(Player):
 
         self.gamma = 0.99
         self.memory = Memory()
-        self.max_steps = 50
 
         self.steps = 0
         self.acc_reward = 0
-        self.episode_rewards = []
         ### ============== OLD STUFF ================= ###
         self.model_name = model_name
         self.load_weights()
@@ -171,7 +169,8 @@ class NetPlayer(Player):
         self.last_critic = self.critic(state)
         return action.item()
 
-    def train(self, q_val):
+    def train(self):
+        q_val = 0
         values = torch.stack(self.memory.values)
         q_vals = np.zeros((len(self.memory), 1))
 
@@ -190,7 +189,6 @@ class NetPlayer(Player):
         self.adam_actor.zero_grad()
         actor_loss.backward()
         self.adam_actor.step()
-
         self.memory.clear()
 
     def update_reward(self, dstate, _reward, _end_game):
@@ -199,9 +197,9 @@ class NetPlayer(Player):
 
         self.acc_reward += _reward
         self.steps += 1
-        if _end_game or (self.steps % self.max_steps == 0):
+        if _end_game:
             last_q_val = self.critic(dstate).item()
-            self.train(last_q_val)
+            self.train()
         if _end_game: 
             self.episode_rewards.append(self.acc_reward)
             self.acc_reward = 0

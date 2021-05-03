@@ -6,6 +6,7 @@ import numpy as np
 ## Inheritance Class
 class Player():
     def __init__(self):
+        self.episode_rewards = []
         pass
 
     def get_action(self, _board, _location, _actions):
@@ -16,10 +17,11 @@ class Player():
 
 ## Proximity Bot
 class BotPlayer(Player):
-    def __init__(self, depth=2):#5):
+    def __init__(self, depth=2):
         super(BotPlayer, self).__init__()
         assert depth >= 1
         self.depth = depth
+        print('Bot using depth:', depth)
         
     def get_action(self, _dstate):
         _board, _location, _actions = _dstate['bot']

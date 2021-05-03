@@ -16,12 +16,12 @@ def plot_durations(episode_durations):
     plt.title('Training...')
     plt.xlabel('Episode')
     plt.ylabel('Duration')
-    plt.scatter(np.arange(len(episode_durations)), durations_t.numpy())
+    plt.scatter(np.arange(len(episode_durations)), durations_t.numpy(), marker='+', s=1)
     # Take 100 episode averages and plot them too
     if len(durations_t) >= 50:
         means = durations_t.unfold(0, 50, 1).mean(1).view(-1)
         means = torch.cat((torch.ones(49) * means[0], means))
-        plt.plot(means.numpy(), color='orange', linewidth=3)
+        plt.plot(means.numpy(), color='orange', linewidth=1)
 
     plt.grid()
     plt.pause(0.001)  # pause a bit so that plots are updated
